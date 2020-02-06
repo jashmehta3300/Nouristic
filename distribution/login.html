@@ -47,14 +47,14 @@
                 <div class="content">
                   <form method="get" class="form-validate mb-4">
                     <div class="form-group">
-                      <input id="login-username" type="text" name="loginUsername" required data-msg="Please enter your username" class="input-material">
+                      <input id="login-email" type="email" name="loginEmail" required data-msg="Please enter your Email" class="input-material">
                       <label for="login-username" class="label-material">User Name</label>
                     </div>
                     <div class="form-group">
                       <input id="login-password" type="password" name="loginPassword" required data-msg="Please enter your password" class="input-material">
                       <label for="login-password" class="label-material">Password</label>
                     </div>
-                    <button type="submit" class="btn btn-primary"><a class="text-white" href="index.html">Login</a></button>
+                    <button class="btn btn-primary" id="login-btn">Login</button>
                   </form><a href="#" class="forgot-pass">Forgot Password?</a><br><small>Do not have an account? </small><a href="register.html" class="signup">Signup</a>
                 </div>
               </div>
@@ -68,6 +68,54 @@
       </div>
     </div>
     <!-- JavaScript files-->
+
+<script>
+
+
+localStorage.removeItem("userData")
+const btn=document.getElementById("login-btn")
+  
+  const email=document.getElementById("login-email")
+  const password=document.getElementById("login-password")
+
+  btn.addEventListener("click",(e)=>{
+    e.preventDefault()
+    const userData={
+    
+      email:email.value,
+      password:password.value,
+      
+    }
+   console.log(userData)
+    fetch("http://localhost:8000/api/signin",{
+      method:'POST',
+      headers:new Headers({
+        "Content-type":"application/json"
+      }),
+      body:JSON.stringify(userData)
+    }).then(res=>res.json()).then(data=>{
+      if(!data.error){
+        console.log("hi")
+        console.log(data)
+        localStorage.setItem("userData",JSON.stringify(data))
+        window.location.replace("/distribution")
+      }
+      else{
+        console.log(data.error)
+      }
+      })
+
+  })
+
+
+
+
+
+
+</script>
+
+
+
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/popper.js/umd/popper.min.js"> </script>
     <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
